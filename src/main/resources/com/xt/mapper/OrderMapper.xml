@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xt.mapper.OrderMapper">
+
+    <insert id="insertAll">
+        insert into orders(bookid,customerid,count)values (#{bookid},#{customerid},#{count});
+    </insert>
+
+    <resultMap id="BookAndCustomer" type="com.xt.entity.Orders">
+        <id column="oid" property="id"></id>
+        <result column="bookid" property="bookid"></result>
+        <result column="customerid" property="customerid"></result>
+        <result column="count" property="count"></result>
+        <association property="book" javaType="com.xt.entity.Book">
+            <id column="bid" property="id"></id>
+            <result column="bookname" property="bookname"></result>
+            <result column="price" property="price"></result>
+            <result column="path" property="path"></result>
+            <result column="author" property="author"></result>
+        </association>
+        <association property="customer" javaType="com.xt.entity.Customer">
+            <id column="cid" property="id"></id>
+        </association>
+    </resultMap>
+
+    <select id="selectAll" resultMap="BookAndCustomer">
+        select *,orders.id oid,book.id bid,customer.id cid from book,customer,orders where orders.bookid=book.id and orders.customerid=customer.id and customer.id=#{id} limit #{page},#{count}
+    </select>
+
+    <select id="selectCount" resultType="integer">
+select count(1) from book,customer,orders where orders.bookid=book.id and orders.customerid=customer.id
+    </select>
+
+    <delete id="delete">
+        DELETE FROM orders WHERE id = #{id}
+    </delete>
+
+    <update id="updateCount">
+        UPDATE orders SET count = count+1 WHERE bookid = #{bookid} and customerid=#{customerid}
+    </update>
+
+    <select id="selectCountByCustomer" resultType="integer">
+        select count(1) from orders where bookid=#{bookid} and  customerid=#{customerid}
+    </select>
+
+</mapper>

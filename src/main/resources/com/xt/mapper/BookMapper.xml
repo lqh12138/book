@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xt.mapper.BookMapper">
+
+    <resultMap id="page" type="com.xt.entity.Book">
+        <id property="id" column="id"></id>
+        <result property="bookname" column="bookname"></result>
+        <result property="author" column="author"></result>
+        <result property="price" column="price"></result>
+        <result property="classid" column="classid"></result>
+        <result property="descr" column="descr"></result>
+        <result property="path" column="path"></result>
+        <association property="aClass" javaType="com.xt.entity.Class">
+            <id property="id" column="id"></id>
+            <result property="username" column="username"></result>
+            <result property="descr" column="descr"></result>
+        </association>
+    </resultMap>
+
+    <select id="selectAll" resultMap="page">
+        select * from book,class where book.classid=class.id
+        <if test=" typeId != null and typeId != '' ">and class.id=#{typeId}</if>
+        limit #{page},#{count}
+    </select>
+
+    <select id="selectCount" resultType="integer">
+        select count(1) from book,class where book.classid=class.id
+        <if test=" typeId != null and typeId != '' ">and class.id=#{typeId}</if>
+    </select>
+
+</mapper>
