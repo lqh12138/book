@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/test")
-        public class TestController {
+public class TestController {
 
-            @RequestMapping("/index")
-            public String index() {
-                return "before/login";
-    }
+//    @RequestMapping("/index")
+//    public String index() {
+//        return "before/login";
+//    }
 }
